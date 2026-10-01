@@ -1,0 +1,1078 @@
+/* ==========================================================================
+   БИЗНЕС-АНАЛИТИК — ПРЕМИАЛЬНЫЙ ФИНТЕХ ДИЗАЙН СИСТЕМА
+   Ориентир: Revolut, Monzo, Linear. WCAG AA контраст, Manrope, Mesh Glows.
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
+
+:root {
+  /* Тёмная тема (по умолчанию): глубокий сине-черный с микро-свечениями */
+  --bg-primary: #0A0F1C;
+  --bg-secondary: #0E1526;
+  --bg-card: rgba(19, 27, 46, 0.72);
+  --bg-card-hover: rgba(26, 37, 62, 0.85);
+  --bg-card-opaque: #121B30;
+  --bg-input: rgba(15, 23, 42, 0.75);
+  --bg-input-focus: rgba(22, 33, 58, 0.95);
+  --bg-glass: rgba(255, 255, 255, 0.04);
+  
+  --text-primary: #F8FAFC;
+  --text-secondary: #94A3B8;
+  --text-muted: #64748B;
+  
+  /* Тонкие полупрозрачные рамки с эффектом стекла */
+  --border: rgba(255, 255, 255, 0.08);
+  --border-light: rgba(255, 255, 255, 0.14);
+  --border-focus: #7C9CFF;
+  
+  /* Премиальная палитра акцентов по ТЗ */
+  --accent-green: #34D399;       /* Изумруд: прибыль, успех */
+  --accent-green-bg: rgba(52, 211, 153, 0.12);
+  --accent-green-border: rgba(52, 211, 153, 0.28);
+  --accent-green-glow: 0 0 24px rgba(52, 211, 153, 0.32);
+
+  --accent-red: #FF6F61;         /* Коралл: убыток, ошибка */
+  --accent-red-bg: rgba(255, 111, 97, 0.12);
+  --accent-red-border: rgba(255, 111, 97, 0.28);
+  --accent-red-glow: 0 0 24px rgba(255, 111, 97, 0.32);
+
+  --accent-yellow: #FBBF24;      /* Янтарь: внимание, низкая маржа */
+  --accent-yellow-bg: rgba(251, 191, 36, 0.12);
+  --accent-yellow-border: rgba(251, 191, 36, 0.28);
+  --accent-yellow-glow: 0 0 24px rgba(251, 191, 36, 0.32);
+
+  --accent-blue: #7C9CFF;        /* Индиго: действие, кнопки, переходы */
+  --accent-blue-bg: rgba(124, 156, 255, 0.12);
+  --accent-blue-border: rgba(124, 156, 255, 0.3);
+  --accent-blue-glow: 0 0 24px rgba(124, 156, 255, 0.35);
+
+  --accent-purple: #A78BFA;
+  --accent-purple-bg: rgba(167, 139, 250, 0.12);
+
+  /* Плавающее нижнее меню */
+  --nav-bg: rgba(13, 20, 36, 0.88);
+  --nav-border: rgba(255, 255, 255, 0.12);
+  --nav-active-pill: rgba(52, 211, 153, 0.16);
+
+  /* Тени и глубина */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.25);
+  --shadow-md: 0 8px 24px -4px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 16px 40px -8px rgba(0, 0, 0, 0.65);
+  --card-glare: inset 0 1px 1px rgba(255, 255, 255, 0.12);
+
+  /* Скругления по дизайн-системе: 14 / 20 / 28 */
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-pill: 9999px;
+
+  /* Безопасные отступы под панели смартфона */
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* Светлая тема: тёплый премиальный белый (без серой «больничной» заливки) */
+[data-theme="light"] {
+  --bg-primary: #F8F9FC;
+  --bg-secondary: #F1F4F9;
+  --bg-card: rgba(255, 255, 255, 0.92);
+  --bg-card-hover: #FFFFFF;
+  --bg-card-opaque: #FFFFFF;
+  --bg-input: #EFF2F7;
+  --bg-input-focus: #FFFFFF;
+  --bg-glass: rgba(0, 0, 0, 0.03);
+
+  --text-primary: #0F172A;
+  --text-secondary: #475569;
+  --text-muted: #8E9BAE;
+
+  --border: rgba(15, 23, 42, 0.08);
+  --border-light: rgba(15, 23, 42, 0.12);
+  --border-focus: #4F46E5;
+
+  --accent-green: #059669;
+  --accent-green-bg: rgba(5, 150, 105, 0.1);
+  --accent-green-border: rgba(5, 150, 105, 0.25);
+  --accent-green-glow: 0 0 20px rgba(5, 150, 105, 0.18);
+
+  --accent-red: #E11D48;
+  --accent-red-bg: rgba(225, 29, 72, 0.1);
+  --accent-red-border: rgba(225, 29, 72, 0.25);
+  --accent-red-glow: 0 0 20px rgba(225, 29, 72, 0.18);
+
+  --accent-yellow: #D97706;
+  --accent-yellow-bg: rgba(217, 119, 6, 0.1);
+  --accent-yellow-border: rgba(217, 119, 6, 0.25);
+  --accent-yellow-glow: 0 0 20px rgba(217, 119, 6, 0.18);
+
+  --accent-blue: #4F46E5;
+  --accent-blue-bg: rgba(79, 70, 229, 0.1);
+  --accent-blue-border: rgba(79, 70, 229, 0.25);
+  --accent-blue-glow: 0 0 20px rgba(79, 70, 229, 0.18);
+
+  --nav-bg: rgba(255, 255, 255, 0.94);
+  --nav-border: rgba(15, 23, 42, 0.08);
+  --nav-active-pill: rgba(79, 70, 229, 0.12);
+
+  --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.05);
+  --shadow-md: 0 8px 24px -4px rgba(15, 23, 42, 0.08);
+  --shadow-lg: 0 20px 40px -8px rgba(15, 23, 42, 0.12);
+  --card-glare: inset 0 1px 1px rgba(255, 255, 255, 0.9);
+}
+
+/* Сброс и базовые настройки */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  font-family: 'Manrope', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-weight: 500;
+  color: var(--text-primary);
+  line-height: 1.5;
+  min-height: 100vh;
+  padding-top: var(--safe-top);
+  padding-bottom: calc(96px + var(--safe-bottom));
+  overflow-x: hidden;
+  background-color: var(--bg-primary);
+  /* Мягкие цветные «свечения» в углах (ambient mesh glows) */
+  background-image: 
+    radial-gradient(circle at 10% 12%, rgba(52, 211, 153, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 90% 88%, rgba(124, 156, 255, 0.09) 0%, transparent 45%);
+  background-attachment: fixed;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+[data-theme="light"] body {
+  background-image: 
+    radial-gradient(circle at 12% 10%, rgba(5, 150, 105, 0.05) 0%, transparent 35%),
+    radial-gradient(circle at 88% 90%, rgba(79, 70, 229, 0.06) 0%, transparent 40%);
+}
+
+/* Контейнер */
+.container {
+  width: 100%;
+  max-width: 580px;
+  margin: 0 auto;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+/* ==========================================================================
+   ШАПКА ПРИЛОЖЕНИЯ
+   ========================================================================== */
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: var(--nav-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.25s ease;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  box-shadow: 0 4px 14px rgba(52, 211, 153, 0.35);
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.brand-icon:active {
+  transform: scale(0.94);
+}
+
+.brand-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  color: var(--text-primary);
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Кнопки в шапке */
+.icon-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: var(--bg-glass);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.icon-btn:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--border-light);
+}
+
+.icon-btn:active {
+  transform: scale(0.92);
+}
+
+/* ==========================================================================
+   КАРТОЧКИ (FINTECH SURFACES)
+   ========================================================================== */
+.card {
+  background: var(--bg-card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  margin-bottom: 14px;
+  box-shadow: var(--shadow-md), var(--card-glare);
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.card:hover {
+  border-color: var(--border-light);
+}
+
+.card-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  font-size: 1.02rem;
+  font-weight: 800;
+  letter-spacing: -0.015em;
+}
+
+/* Статусные бейджи */
+.card-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.badge-green {
+  background: var(--accent-green-bg);
+  color: var(--accent-green);
+  border: 1px solid var(--accent-green-border);
+}
+
+.badge-red {
+  background: var(--accent-red-bg);
+  color: var(--accent-red);
+  border: 1px solid var(--accent-red-border);
+}
+
+.badge-yellow {
+  background: var(--accent-yellow-bg);
+  color: var(--accent-yellow);
+  border: 1px solid var(--accent-yellow-border);
+}
+
+.badge-blue {
+  background: var(--accent-blue-bg);
+  color: var(--accent-blue);
+  border: 1px solid var(--accent-blue-border);
+}
+
+/* ==========================================================================
+   ГЛАВНАЯ КАРТОЧКА ПРИБЫЛИ (HERO METRIC & RING)
+   ========================================================================== */
+#analysis-hero-card {
+  text-align: center;
+  padding: 24px 20px 20px;
+  background: linear-gradient(180deg, var(--bg-card) 0%, rgba(19, 27, 46, 0.95) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+[data-theme="light"] #analysis-hero-card {
+  background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFD 100%);
+  border: 1px solid rgba(15, 23, 42, 0.1);
+}
+
+.ring-container {
+  position: relative;
+  width: 144px;
+  height: 144px;
+  margin: 10px auto 14px;
+}
+
+.ring-svg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.35));
+}
+
+.ring-bg {
+  stroke: rgba(255, 255, 255, 0.06);
+  stroke-width: 12;
+  fill: none;
+}
+
+[data-theme="light"] .ring-bg {
+  stroke: rgba(15, 23, 42, 0.07);
+}
+
+.ring-val {
+  stroke-width: 12;
+  stroke-linecap: round;
+  fill: none;
+  stroke-dasharray: 364.4;
+  stroke-dashoffset: 364.4;
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+  transition: stroke-dashoffset 0.85s cubic-bezier(0.16, 1, 0.3, 1), stroke 0.35s ease;
+}
+
+.ring-center-text {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.ring-pct {
+  font-size: 2rem;
+  font-weight: 800;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.03em;
+}
+
+.ring-sub {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+/* Крупная цифра чистой прибыли */
+#analysis-profit-value, #whatif-new-profit {
+  font-size: 2.85rem;
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+  margin: 6px 0 2px;
+  transition: color 0.3s ease;
+}
+
+/* ==========================================================================
+   ПОЛЯ ВВОДА И ФОРМЫ (FINTECH INPUTS)
+   ========================================================================== */
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+}
+
+.form-input, .form-select, select.form-input {
+  width: 100%;
+  height: 52px;
+  padding: 0 16px;
+  border-radius: var(--radius-md);
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  font-size: 1.05rem;
+  font-weight: 600;
+  font-family: inherit;
+  outline: none;
+  font-variant-numeric: tabular-nums;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+.form-input:focus, select.form-input:focus {
+  background: var(--bg-input-focus);
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px rgba(124, 156, 255, 0.22), inset 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.form-input::placeholder {
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+/* Поле с валютой справа */
+.input-with-currency {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-with-currency .form-input {
+  padding-right: 44px;
+}
+
+.currency-symbol {
+  position: absolute;
+  right: 16px;
+  color: var(--text-secondary);
+  font-weight: 700;
+  font-size: 1.1rem;
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   КНОПКИ (TACTILE ACTIONS)
+   ========================================================================== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 52px;
+  padding: 12px 22px;
+  border-radius: 16px;
+  font-size: 0.96rem;
+  font-weight: 700;
+  font-family: inherit;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+  color: #FFFFFF;
+  box-shadow: 0 8px 22px -4px rgba(16, 185, 129, 0.45), inset 0 1px 1px rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.btn-primary:hover {
+  box-shadow: 0 10px 28px -4px rgba(16, 185, 129, 0.55);
+}
+
+.btn-secondary {
+  background: var(--bg-glass);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(10px);
+}
+
+.btn-secondary:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--border-light);
+}
+
+.btn-sm {
+  min-height: 38px;
+  padding: 6px 14px;
+  font-size: 0.82rem;
+  border-radius: var(--radius-sm);
+}
+
+/* ==========================================================================
+   ТАБЛИЦЫ ДАННЫХ
+   ========================================================================== */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.data-table th, .data-table td {
+  padding: 12px 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+.data-table th {
+  color: var(--text-muted);
+  font-weight: 700;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.data-table td {
+  font-variant-numeric: tabular-nums;
+}
+
+.data-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* ==========================================================================
+   ПОЛЗУНКИ «ЧТО ЕСЛИ»
+   ========================================================================== */
+.custom-range {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 8px;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  outline: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.custom-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--accent-blue);
+  border: 3px solid #FFFFFF;
+  box-shadow: 0 4px 12px rgba(124, 156, 255, 0.45);
+  cursor: pointer;
+  transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.15s ease;
+}
+
+.custom-range::-webkit-slider-thumb:hover, .custom-range::-webkit-slider-thumb:active {
+  transform: scale(1.18);
+  box-shadow: 0 6px 18px rgba(124, 156, 255, 0.6);
+}
+
+.slider-badge {
+  background: var(--accent-blue-bg);
+  border: 1px solid var(--accent-blue-border);
+  color: var(--accent-blue);
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  font-size: 0.8rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ==========================================================================
+   ПЛАВАЮЩЕЕ НИЖНЕЕ МЕНЮ (FLOATING PILL NAV)
+   ========================================================================== */
+.bottom-nav {
+  position: fixed;
+  bottom: calc(12px + var(--safe-bottom));
+  left: 14px;
+  right: 14px;
+  max-width: 540px;
+  margin: 0 auto;
+  height: 66px;
+  background: var(--nav-bg);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--nav-border);
+  border-radius: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 0 6px;
+  box-shadow: var(--shadow-lg), inset 0 1px 1px rgba(255, 255, 255, 0.14);
+  z-index: 50;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.nav-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  color: var(--text-muted);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 8px 4px;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+}
+
+.nav-item svg {
+  width: 22px;
+  height: 22px;
+  stroke-width: 1.85;
+  stroke: currentColor;
+  fill: none;
+  transition: transform 0.22s ease, stroke 0.22s ease;
+}
+
+.nav-item.active {
+  color: var(--accent-green);
+  background: var(--nav-active-pill);
+}
+
+.nav-item.active svg {
+  transform: translateY(-1px) scale(1.08);
+  stroke: var(--accent-green);
+}
+
+.nav-item:active {
+  transform: scale(0.92);
+}
+
+/* ==========================================================================
+   ВКЛАДКИ И АНИМАЦИИ ПЕРЕХОДА
+   ========================================================================== */
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+  animation: tabFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes tabFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Каскадное появление карточек */
+.tab-content.active .card:nth-child(1) { animation: cardCascade 0.35s cubic-bezier(0.16, 1, 0.3, 1) both; animation-delay: 40ms; }
+.tab-content.active .card:nth-child(2) { animation: cardCascade 0.35s cubic-bezier(0.16, 1, 0.3, 1) both; animation-delay: 80ms; }
+.tab-content.active .card:nth-child(3) { animation: cardCascade 0.35s cubic-bezier(0.16, 1, 0.3, 1) both; animation-delay: 120ms; }
+.tab-content.active .card:nth-child(4) { animation: cardCascade 0.35s cubic-bezier(0.16, 1, 0.3, 1) both; animation-delay: 160ms; }
+.tab-content.active .card:nth-child(5) { animation: cardCascade 0.35s cubic-bezier(0.16, 1, 0.3, 1) both; animation-delay: 200ms; }
+
+@keyframes cardCascade {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==========================================================================
+   СОВЕТНИК (MESSENGER UI)
+   ========================================================================== */
+.chip-group {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 4px 0 10px;
+  scrollbar-width: none;
+}
+
+.chip-group::-webkit-scrollbar {
+  display: none;
+}
+
+.chip {
+  flex-shrink: 0;
+  padding: 8px 14px;
+  border-radius: var(--radius-pill);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: var(--shadow-sm);
+}
+
+.chip:hover, .chip:active {
+  background: var(--accent-blue-bg);
+  border-color: var(--accent-blue-border);
+  color: var(--accent-blue);
+  transform: translateY(-1px);
+}
+
+.chat-msg {
+  padding: 14px 18px;
+  border-radius: 20px;
+  max-width: 88%;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  animation: msgPop 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  word-break: break-word;
+}
+
+@keyframes msgPop {
+  from { opacity: 0; transform: scale(0.96) translateY(6px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.chat-msg-user {
+  align-self: flex-end;
+  background: linear-gradient(135deg, #4F46E5 0%, #3B82F6 100%);
+  color: #FFFFFF;
+  border-bottom-right-radius: 4px;
+  box-shadow: 0 4px 16px rgba(79, 70, 229, 0.35);
+}
+
+.chat-msg-bot {
+  align-self: flex-start;
+  background: var(--bg-card-opaque);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  border-bottom-left-radius: 4px;
+  box-shadow: var(--shadow-sm);
+}
+
+.chat-msg-bot strong {
+  color: var(--accent-green);
+}
+
+/* ==========================================================================
+   КОНВЕРТЕР ВАЛЮТ
+   ========================================================================== */
+#btn-swap-converter {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  background: var(--bg-card);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border);
+}
+
+#btn-swap-converter:active {
+  transform: rotate(180deg) scale(0.9);
+}
+
+/* ==========================================================================
+   ХАБ ИНСТРУМЕНТОВ («ЕЩЁ»)
+   ========================================================================== */
+.tools-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+@media (min-width: 480px) {
+  .tools-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.tool-card {
+  background: var(--bg-card);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: var(--shadow-sm), var(--card-glare);
+  text-align: left;
+  width: 100%;
+}
+
+.tool-card:hover {
+  border-color: var(--border-light);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.tool-card:active {
+  transform: scale(0.97);
+}
+
+.tool-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  background: var(--bg-input);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.45rem;
+  flex-shrink: 0;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+}
+
+.tool-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.tool-title {
+  font-weight: 800;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-primary);
+}
+
+.tool-desc {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  margin-top: 3px;
+  line-height: 1.4;
+}
+
+.subtab-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.badge-ai {
+  font-size: 0.68rem;
+  font-weight: 800;
+  background: var(--accent-purple-bg);
+  color: var(--accent-purple);
+  padding: 2px 7px;
+  border-radius: var(--radius-pill);
+  border: 1px solid rgba(167, 139, 250, 0.35);
+  text-transform: uppercase;
+}
+
+.badge-calc {
+  font-size: 0.68rem;
+  font-weight: 800;
+  background: var(--accent-green-bg);
+  color: var(--accent-green);
+  padding: 2px 7px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--accent-green-border);
+  text-transform: uppercase;
+}
+
+.ai-notice-banner {
+  background: var(--accent-purple-bg);
+  border: 1px solid rgba(167, 139, 250, 0.25);
+  border-radius: var(--radius-md);
+  padding: 10px 14px;
+  font-size: 0.76rem;
+  color: var(--text-secondary);
+  line-height: 1.45;
+  margin-bottom: 14px;
+}
+
+/* ==========================================================================
+   МОДАЛЬНЫЕ ОКНА И ДИАЛОГИ
+   ========================================================================== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 8, 16, 0.75);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 100;
+  display: none;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.modal-overlay.open {
+  display: flex;
+}
+
+.modal-sheet {
+  background: var(--bg-card-opaque);
+  border: 1px solid var(--border-light);
+  border-radius: 28px 28px 0 0;
+  width: 100%;
+  max-width: 580px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 24px 20px calc(28px + var(--safe-bottom));
+  box-shadow: var(--shadow-lg), var(--card-glare);
+  animation: sheetSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes sheetSlideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.modal-title {
+  font-size: 1.2rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.close-btn {
+  background: var(--bg-glass);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.3rem;
+  transition: all 0.2s ease;
+}
+
+.close-btn:active {
+  transform: scale(0.9);
+}
+
+/* ==========================================================================
+   ВСПЛЫВАЮЩИЕ УВЕДОМЛЕНИЯ (TOAST)
+   ========================================================================== */
+.toast-container {
+  position: fixed;
+  top: calc(18px + var(--safe-top));
+  left: 16px;
+  right: 16px;
+  max-width: 480px;
+  margin: 0 auto;
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  pointer-events: none;
+}
+
+.toast {
+  background: var(--bg-card-opaque);
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-lg), var(--card-glare);
+  color: var(--text-primary);
+  padding: 14px 20px;
+  border-radius: var(--radius-md);
+  font-size: 0.9rem;
+  font-weight: 700;
+  pointer-events: auto;
+  animation: toastDropIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+@keyframes toastDropIn {
+  from { opacity: 0; transform: translateY(-16px) scale(0.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ==========================================================================
+   ПЕЧАТНЫЕ СТИЛИ (ДЛЯ СЧЕТОВ И PDF A4)
+   ========================================================================== */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 12mm;
+  }
+  html, body {
+    background: #FFFFFF !important;
+    color: #000000 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  .app-header, .bottom-nav, .no-print, .btn, .icon-btn, .toast-container, .modal-overlay,
+  #tab-analysis, #tab-whatif, #tab-advisor, #tab-rates, #tab-history,
+  .tools-grid, .subtab-header, .card, .tool-card {
+    display: none !important;
+  }
+  #tab-more, #tool-view-invoices {
+    display: block !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  #invoice-printable-sheet, .invoice-print-area {
+    display: block !important;
+    background: #FFFFFF !important;
+    color: #000000 !important;
+    width: 100% !important;
+    padding: 0 !important;
+    margin: 0 auto !important;
+    font-size: 10.5pt !important;
+  }
+  #invoice-printable-sheet * {
+    color: #000000 !important;
+  }
+  .print-only {
+    display: block !important;
+  }
+}
+
+.print-only {
+  display: none;
+}
+
+/* ==========================================================================
+   УВАЖЕНИЕ PREFERS-REDUCED-MOTION
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "name": "Бизнес-аналитик",
+  "description": "Мобильное PWA-приложение для владельцев малого бизнеса с мощной аналитикой, расчётами, выявлением рисков и сценариями.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

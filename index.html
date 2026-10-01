@@ -1,0 +1,1713 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Бизнес-аналитик — Финансы малого бизнеса</title>
+  <meta name="description" content="Мобильное PWA-приложение для владельцев малого бизнеса с мощной аналитикой, контролем рисков и расчетом прибыли.">
+  <meta property="og:title" content="Бизнес-аналитик">
+  <meta property="og:description" content="Умная финансовая аналитика, поиск причин проблем и 3 действия для роста прибыли.">
+  <meta property="og:type" content="website">
+
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0a0f1c">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Аналитик">
+  
+  <link rel="icon" type="image/svg+xml" href="./icon.svg">
+  <link rel="apple-touch-icon" href="./icon-192.png">
+  <link rel="stylesheet" href="./app.css">
+</head>
+<body>
+
+  <!-- ВЕРХНЯЯ ПАНЕЛЬ -->
+  <header class="app-header no-print">
+    <div class="brand">
+      <img src="./icon.svg" alt="Лого" class="brand-icon">
+      <div>
+        <div class="brand-title">Бизнес-аналитик</div>
+      </div>
+    </div>
+    <div class="header-actions" style="display:flex; align-items:center; gap:8px;">
+      <button class="btn btn-sm btn-secondary" id="btn-header-niche" title="Выбор ниши" style="padding:6px 10px; font-size:0.8rem; border-radius:12px;">
+        <span id="header-niche-name">Кафе</span>
+      </button>
+      <button class="icon-btn" id="btn-header-help" title="О приложении и обучение">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      </button>
+      <button class="icon-btn" id="theme-toggle" title="Переключить тему">
+        <svg id="theme-icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- БАННЕР РЕЖИМА ПРОСМОТРА (ДЛЯ СОТРУДНИКА) -->
+  <div id="viewmode-banner" class="no-print" style="display:none; background:rgba(245,158,11,0.18); border-bottom:1px solid var(--accent-yellow); padding:8px 16px; font-size:0.82rem; justify-content:space-between; align-items:center;">
+    <span>🔒 <strong>Режим просмотра активен</strong> (финансы скрыты)</span>
+    <button class="btn btn-sm btn-secondary" id="btn-exit-viewmode-banner" style="padding:3px 10px; font-size:0.75rem; border-color:var(--accent-yellow);">Выйти по PIN</button>
+  </div>
+
+  <!-- ОСНОВНОЙ КОНТЕНТ ПО ВКЛАДКАМ -->
+  <main class="container" style="padding-top:12px;">
+
+    <!-- ================= ВКЛАДКА 1: АНАЛИЗ ================= -->
+    <section id="tab-analysis" class="tab-content active">
+      
+      <!-- Карточка ниши и норм -->
+      <div class="card" style="padding:14px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+          <label for="niche-select" style="font-weight:700; font-size:0.92rem;">Ниша бизнеса:</label>
+          <button class="btn btn-sm btn-secondary" id="btn-open-custom-norms" style="display:none; font-size:0.75rem; padding:4px 8px;">Настроить нормы</button>
+        </div>
+        <select id="niche-select" class="form-input" style="font-weight:600; font-size:0.95rem;">
+          <option value="cafe">☕ Кафе (зарплаты 35%, аренда 15%, реклама 8%)</option>
+          <option value="restaurant">🍽️ Ресторан или бар (зарплаты 33%, аренда 12%, реклама 5%)</option>
+          <option value="clothing">👗 Магазин одежды (зарплаты 12%, аренда 12%, реклама 8%)</option>
+          <option value="grocery">🍏 Продуктовый магазин (зарплаты 10%, аренда 6%, реклама 2%)</option>
+          <option value="beauty">💇‍♀️ Салон красоты (зарплаты 45%, аренда 15%, реклама 8%)</option>
+          <option value="barbershop">💈 Барбершоп (зарплаты 50%, аренда 12%, реклама 8%)</option>
+          <option value="auto">🚗 Автосервис (зарплаты 30%, аренда 10%, реклама 5%)</option>
+          <option value="online_shop">📦 Онлайн-магазин (зарплаты 10%, аренда 3%, реклама 20%)</option>
+          <option value="fitness">🏋️ Фитнес-студия (зарплаты 35%, аренда 20%, реклама 10%)</option>
+          <option value="construction">🔨 Ремонт и строительство (зарплаты 30%, аренда 3%, реклама 5%)</option>
+          <option value="courses">🎓 Курсы и обучение (зарплаты 35%, аренда 10%, реклама 15%)</option>
+          <option value="it_services">💻 IT и услуги (зарплаты 55%, аренда 6%, реклама 10%)</option>
+          <option value="clinic">🏥 Медицинская клиника (зарплаты 30%, аренда 10%, реклама 8%)</option>
+          <option value="delivery">🚚 Доставка (зарплаты 30%, аренда 5%, реклама 5%)</option>
+          <option value="production">⚙️ Производство (зарплаты 28%, аренда 6%, реклама 4%)</option>
+          <option value="other_services">🤝 Другие услуги (зарплаты 40%, аренда 10%, реклама 15%)</option>
+          <option value="custom">⚙️ Своя ниша (пользовательские нормы)</option>
+        </select>
+        <div style="font-size:0.75rem; color:var(--text-muted); margin-top:6px;">
+          * Нормы ориентировочные (зарплаты / аренда / реклама в % дохода для бенчмаркинга)
+        </div>
+      </div>
+
+      <!-- Ввод показателей месяца -->
+      <div class="card">
+        <div class="card-title">
+          <span>Показатели месяца</span>
+          <div style="display:flex; gap:6px;">
+            <button class="btn btn-sm btn-secondary" id="btn-example-data" title="Заполнить демо-данными" style="font-size:0.78rem; padding:4px 8px;">Пример</button>
+            <button class="btn btn-sm btn-secondary" id="btn-clear-data" title="Очистить поля" style="font-size:0.78rem; padding:4px 8px;">Сброс</button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="in-revenue">Доход (выручка) за месяц</label>
+          <div class="input-with-currency">
+            <input type="number" id="in-revenue" class="form-input" placeholder="0" min="0" step="1000">
+            <span class="currency-symbol">₽</span>
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+          <div class="form-group">
+            <label class="form-label" for="in-rent">Аренда</label>
+            <div class="input-with-currency">
+              <input type="number" id="in-rent" class="form-input" placeholder="0" min="0" step="500">
+              <span class="currency-symbol">₽</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="in-salaries">Зарплаты (ФОТ)</label>
+            <div class="input-with-currency">
+              <input type="number" id="in-salaries" class="form-input" placeholder="0" min="0" step="1000">
+              <span class="currency-symbol">₽</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+          <div class="form-group">
+            <label class="form-label" for="in-ads">Реклама и маркетинг</label>
+            <div class="input-with-currency">
+              <input type="number" id="in-ads" class="form-input" placeholder="0" min="0" step="500">
+              <span class="currency-symbol">₽</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="in-other">Прочие расходы</label>
+            <div class="input-with-currency">
+              <input type="number" id="in-other" class="form-input" placeholder="0" min="0" step="500">
+              <span class="currency-symbol">₽</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom:0;">
+          <label class="form-label" for="in-month-note">Заметка к месяцу (по желанию)</label>
+          <input type="text" id="in-month-note" class="form-input" placeholder="Например: Апрель 2026, сезонный рост">
+        </div>
+      </div>
+
+      <!-- Главная карточка результата месяца -->
+      <div class="card" id="analysis-hero-card">
+        <div class="card-title">
+          <span>Финансовый результат</span>
+          <span class="card-badge" id="analysis-status-badge">Заполните данные</span>
+        </div>
+
+        <div class="ring-container" style="margin:16px 0 12px;">
+          <svg class="ring-svg" viewBox="0 0 140 140">
+            <defs>
+              <linearGradient id="ring-grad-green" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#34D399" />
+                <stop offset="100%" stop-color="#059669" />
+              </linearGradient>
+              <linearGradient id="ring-grad-yellow" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#FDE047" />
+                <stop offset="100%" stop-color="#D97706" />
+              </linearGradient>
+              <linearGradient id="ring-grad-red" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#FF6F61" />
+                <stop offset="100%" stop-color="#E11D48" />
+              </linearGradient>
+            </defs>
+            <circle class="ring-bg" cx="70" cy="70" r="58" stroke="var(--border)" stroke-width="12" fill="none"/>
+            <circle class="ring-val" id="analysis-ring-val" cx="70" cy="70" r="58" stroke="url(#ring-grad-green)" stroke-width="12" fill="none" stroke-dasharray="364.4" stroke-dashoffset="364.4" stroke-linecap="round" style="transform: rotate(-90deg); transform-origin: 50% 50%; transition: stroke-dashoffset 0.8s cubic-bezier(0.16, 1, 0.3, 1), stroke 0.3s;"/>
+          </svg>
+          <div class="ring-center-text">
+            <div class="ring-pct" id="analysis-margin-pct" style="font-size:1.9rem; font-weight:800;">0%</div>
+            <div class="ring-sub" style="font-size:0.75rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.04em;">маржинальность</div>
+          </div>
+        </div>
+
+        <div style="text-align:center; padding:8px 0 12px;">
+          <div id="analysis-profit-value" style="font-size:2.85rem; font-weight:800; letter-spacing:-0.035em; color:var(--text-primary);">0 ₽</div>
+          <div style="font-size:0.85rem; color:var(--text-secondary); margin-top:2px;">Чистая прибыль за месяц</div>
+
+          <!-- Чип сравнения к прошлому периоду -->
+          <div id="analysis-comparison-chip" style="margin-top:6px; display:inline-flex; align-items:center; gap:4px; font-size:0.75rem; font-weight:700; padding:2px 10px; border-radius:12px; background:var(--bg-glass); border:1px solid var(--border);">
+            <span>Данные за текущий месяц</span>
+          </div>
+
+          <!-- SVG-спарклайн динамики -->
+          <div id="analysis-sparkline-container" style="height:32px; width:150px; margin:8px auto 0;">
+            <svg id="analysis-sparkline-svg" viewBox="0 0 150 32" style="width:100%; height:100%; overflow:visible;"></svg>
+          </div>
+
+          <div id="analysis-total-expenses" style="font-size:0.82rem; color:var(--text-muted); margin-top:6px;">Всего расходов: 0 ₽</div>
+        </div>
+
+        <div style="margin-top:12px;">
+          <button class="btn btn-primary" id="btn-save-month" style="width:100%; display:flex; align-items:center; justify-content:center; gap:8px;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+            <span>Сохранить месяц в историю</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Таблица структуры расходов -->
+      <div class="card">
+        <div class="card-title">
+          <span>Статьи расходов и сравнение с нормой</span>
+        </div>
+        <div class="table-responsive">
+          <table class="data-table" id="table-expenses">
+            <thead>
+              <tr>
+                <th>Статья</th>
+                <th style="text-align:right;">Сумма</th>
+                <th style="text-align:right;">% дохода</th>
+                <th style="text-align:right;">Норма</th>
+              </tr>
+            </thead>
+            <tbody id="tbody-expenses"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Блок «Почему так» -->
+      <div class="card" id="card-why">
+        <div class="card-title">
+          <span>🔍 Почему так</span>
+        </div>
+        <div id="why-content" style="line-height:1.6; font-size:0.92rem;"></div>
+      </div>
+
+      <!-- Блок «Расчёт» по шагам -->
+      <div class="card" id="card-calc-steps">
+        <div class="card-title">
+          <span>🧮 Расчёт по шагам</span>
+        </div>
+        <div id="calc-steps-content" style="line-height:1.6; font-size:0.9rem;"></div>
+      </div>
+
+      <!-- Блок «Что делать» -->
+      <div class="card" id="card-actions">
+        <div class="card-title">
+          <span>🎯 Что делать (3 конкретных действия)</span>
+        </div>
+        <div id="actions-content" style="display:flex; flex-direction:column; gap:10px;"></div>
+      </div>
+
+    </section>
+
+    <!-- ================= ВКЛАДКА 2: ЧТО ЕСЛИ ================= -->
+    <section id="tab-whatif" class="tab-content">
+      
+      <div class="card">
+        <div class="card-title">
+          <span>Сценарный калькулятор «Что если»</span>
+          <button class="btn btn-sm btn-secondary" id="btn-reset-whatif" style="font-size:0.75rem; padding:4px 8px;">Сбросить в 0%</button>
+        </div>
+        <p style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:16px;">
+          Двигайте ползунки, чтобы смоделировать изменения цен, аренды, рекламы и штата. Расчет выполняется мгновенно кодом!
+        </p>
+
+        <!-- Ползунок 1: Цены -->
+        <div class="slider-group" style="margin-bottom:18px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+            <label for="slider-price" style="font-weight:600; font-size:0.88rem;">Что если изменить цены?</label>
+            <span class="slider-badge" id="val-slider-price" style="font-weight:700; color:var(--accent-blue);">0%</span>
+          </div>
+          <input type="range" id="slider-price" min="-50" max="50" value="0" step="1" class="custom-range" style="width:100%;">
+          <div style="display:flex; justify-content:space-between; font-size:0.72rem; color:var(--text-muted); margin-top:2px;">
+            <span>-50%</span>
+            <span>0% (текущие цены)</span>
+            <span>+50%</span>
+          </div>
+        </div>
+
+        <!-- Ползунок 2: Аренда -->
+        <div class="slider-group" style="margin-bottom:18px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+            <label for="slider-rent" style="font-weight:600; font-size:0.88rem;">Что если изменить аренду?</label>
+            <span class="slider-badge" id="val-slider-rent" style="font-weight:700; color:var(--accent-blue);">0%</span>
+          </div>
+          <input type="range" id="slider-rent" min="-50" max="50" value="0" step="1" class="custom-range" style="width:100%;">
+          <div style="display:flex; justify-content:space-between; font-size:0.72rem; color:var(--text-muted); margin-top:2px;">
+            <span>-50%</span>
+            <span>0% (текущая аренда)</span>
+            <span>+50%</span>
+          </div>
+        </div>
+
+        <!-- Ползунок 3: Реклама -->
+        <div class="slider-group" style="margin-bottom:18px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+            <label for="slider-ads" style="font-weight:600; font-size:0.88rem;">Что если изменить рекламу?</label>
+            <span class="slider-badge" id="val-slider-ads" style="font-weight:700; color:var(--accent-blue);">0%</span>
+          </div>
+          <input type="range" id="slider-ads" min="-50" max="50" value="0" step="1" class="custom-range" style="width:100%;">
+          <div style="display:flex; justify-content:space-between; font-size:0.72rem; color:var(--text-muted); margin-top:2px;">
+            <span>-50%</span>
+            <span>0%</span>
+            <span>+50% (с прогнозом выручки)</span>
+          </div>
+        </div>
+
+        <!-- Ползунок 4: Сотрудники / Зарплаты -->
+        <div class="slider-group" style="margin-bottom:10px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+            <label for="slider-salaries" style="font-weight:600; font-size:0.88rem;">Что если нанять / уволить (ФОТ)?</label>
+            <span class="slider-badge" id="val-slider-salaries" style="font-weight:700; color:var(--accent-blue);">0%</span>
+          </div>
+          <input type="range" id="slider-salaries" min="-50" max="50" value="0" step="1" class="custom-range" style="width:100%;">
+          <div style="display:flex; justify-content:space-between; font-size:0.72rem; color:var(--text-muted); margin-top:2px;">
+            <span>-50% (сокращение)</span>
+            <span>0%</span>
+            <span>+50% (найм)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Карточка результатов моделирования -->
+      <div class="card" id="card-whatif-result">
+        <div class="card-title">
+          <span>Прогноз результатов</span>
+          <span class="card-badge" id="badge-whatif-diff">0 ₽ (0%)</span>
+        </div>
+
+        <div style="text-align:center; padding:16px 0 10px;">
+          <div id="whatif-new-profit" style="font-size:2.4rem; font-weight:800; letter-spacing:-0.02em;">0 ₽</div>
+          <div style="font-size:0.85rem; color:var(--text-secondary); margin-top:2px;">Прогноз чистой прибыли</div>
+          <div id="whatif-profit-delta" style="font-size:1rem; font-weight:700; margin-top:6px; color:var(--accent-green);">
+            Разница с текущей: 0 ₽
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:12px;">
+          <div style="background:var(--bg-input); padding:10px 12px; border-radius:12px; border:1px solid var(--border);">
+            <div style="font-size:0.75rem; color:var(--text-muted);">Прогноз выручки</div>
+            <div id="whatif-new-rev" style="font-size:1.15rem; font-weight:700; margin-top:2px;">0 ₽</div>
+          </div>
+          <div style="background:var(--bg-input); padding:10px 12px; border-radius:12px; border:1px solid var(--border);">
+            <div style="font-size:0.75rem; color:var(--text-muted);">Прогноз расходов</div>
+            <div id="whatif-new-exp" style="font-size:1.15rem; font-weight:700; margin-top:2px;">0 ₽</div>
+          </div>
+          <div style="background:var(--bg-input); padding:10px 12px; border-radius:12px; border:1px solid var(--border);">
+            <div style="font-size:0.75rem; color:var(--text-muted);">Новая маржинальность</div>
+            <div id="whatif-new-margin" style="font-size:1.15rem; font-weight:700; margin-top:2px;">0%</div>
+          </div>
+          <div style="background:var(--bg-input); padding:10px 12px; border-radius:12px; border:1px solid var(--border);">
+            <div style="font-size:0.75rem; color:var(--text-muted);">Изменение прибыли</div>
+            <div id="whatif-pct-change" style="font-size:1.15rem; font-weight:700; margin-top:2px;">0%</div>
+          </div>
+        </div>
+
+        <div id="whatif-insight" style="margin-top:14px; padding:12px; background:var(--accent-blue-bg); border:1px solid rgba(59,130,246,0.3); border-radius:12px; font-size:0.85rem; line-height:1.5;">
+          Сдвиньте любой ползунок для оценки сценарного влияния на чистую прибыль.
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ================= ВКЛАДКА 3: СОВЕТНИК ================= -->
+    <section id="tab-advisor" class="tab-content">
+      
+      <!-- Статус и настройки советника -->
+      <div class="card" style="padding:14px;">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <div>
+            <div style="font-size:0.75rem; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Режим советника</div>
+            <div id="advisor-mode-text" style="font-weight:700; font-size:0.95rem; display:flex; align-items:center; gap:6px;">
+              <span class="status-indicator online"></span>
+              <span>ИИ-аналитик Gemini</span>
+            </div>
+          </div>
+          <div style="display:flex; gap:6px;">
+            <button class="btn btn-sm btn-secondary" id="btn-open-apikey" style="font-size:0.75rem; padding:5px 8px;">Ключ API</button>
+            <button class="btn btn-sm btn-secondary" id="btn-toggle-offline-advisor" style="font-size:0.75rem; padding:5px 8px;">Работать без ИИ</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Быстрые вопросы -->
+      <div style="margin-bottom:12px;">
+        <div style="font-size:0.78rem; color:var(--text-secondary); margin-bottom:6px; font-weight:600;">Быстрые вопросы:</div>
+        <div class="chip-group" style="margin-bottom:0;">
+          <button class="chip" data-quick-q="Как поднять прибыль на 20%?">Как поднять прибыль на 20%?</button>
+          <button class="chip" data-quick-q="Где я теряю деньги?">Где я теряю деньги?</button>
+          <button class="chip" data-quick-q="Стоит ли нанимать сотрудника?">Стоит ли нанимать сотрудника?</button>
+          <button class="chip" data-quick-q="Составь план выхода в плюс и роста на 30 дней">План на 30 дней</button>
+        </div>
+      </div>
+
+      <!-- Окно сообщений советника -->
+      <div class="card" style="padding:12px; margin-bottom:12px;">
+        <div id="advisor-messages" style="display:flex; flex-direction:column; gap:12px; max-height:480px; overflow-y:auto; padding-right:4px;"></div>
+      </div>
+
+      <!-- Поле ввода вопроса -->
+      <div class="card" style="padding:12px;">
+        <div style="display:flex; gap:8px;">
+          <input type="text" id="advisor-user-input" class="form-input" placeholder="Задайте вопрос по вашим цифрам..." style="flex:1;">
+          <button class="btn btn-primary" id="btn-send-advisor" style="padding:0 16px; display:flex; align-items:center; justify-content:center;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </button>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px;">
+          <button class="btn btn-sm btn-secondary" id="btn-clear-chat" style="font-size:0.75rem; padding:3px 8px;">Очистить чат</button>
+          <span style="font-size:0.72rem; color:var(--text-muted);">Без юридических и налоговых заключений</span>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ================= ВКЛАДКА 4: ВАЛЮТЫ ================= -->
+    <section id="tab-currencies" class="tab-content">
+      
+      <!-- Карточка выбора основной валюты -->
+      <div class="card">
+        <div class="card-title">
+          <span>Основная валюта бизнеса</span>
+        </div>
+        <p style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:10px;">
+          Все показатели приложения (доход, аренда, прибыль, история) отображаются в выбранной валюте:
+        </p>
+        <div class="form-group" style="margin-bottom:12px;">
+          <select id="select-main-currency" class="form-input" style="font-size:0.95rem; font-weight:600;"></select>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; background:var(--bg-input); padding:10px 12px; border-radius:12px; border:1px solid var(--border);">
+          <div>
+            <div style="font-size:0.75rem; color:var(--text-muted);">Статус курсов</div>
+            <div id="currency-rates-status" style="font-size:0.85rem; font-weight:600;">Загрузка курсов...</div>
+          </div>
+          <button class="btn btn-sm btn-primary" id="btn-refresh-rates" style="font-size:0.78rem; padding:5px 10px;">Обновить</button>
+        </div>
+      </div>
+
+      <!-- Конвертер валют -->
+      <div class="card">
+        <div class="card-title">
+          <span>Конвертер валют</span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="converter-amount">Сумма для перевода</label>
+          <input type="number" id="converter-amount" class="form-input" placeholder="1000" value="1000" min="0" step="10">
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr auto 1fr; gap:8px; align-items:flex-end;">
+          <div class="form-group" style="margin-bottom:0;">
+            <label class="form-label" for="converter-from">Из</label>
+            <select id="converter-from" class="form-input"></select>
+          </div>
+          <button class="icon-btn" id="btn-swap-converter" title="Поменять валюты местами" style="margin-bottom:2px; height:44px; width:44px;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m16 3 4 4-4 4"/><path d="M20 7H4"/><path d="m8 21-4-4 4-4"/><path d="M4 17h16"/></svg>
+          </button>
+          <div class="form-group" style="margin-bottom:0;">
+            <label class="form-label" for="converter-to">В</label>
+            <select id="converter-to" class="form-input"></select>
+          </div>
+        </div>
+
+        <div style="margin-top:14px; text-align:center; padding:18px; background:var(--bg-input); border-radius:16px; border:1px solid var(--border);">
+          <div style="font-size:0.75rem; color:var(--text-muted); text-transform:uppercase; font-weight:700; letter-spacing:0.04em;">Результат конвертации</div>
+          <div id="converter-result-value" style="font-size:2.4rem; font-weight:800; color:var(--accent-green); margin:4px 0; font-variant-numeric:tabular-nums;">0</div>
+          <div id="converter-rate-info" style="font-size:0.82rem; color:var(--text-secondary);">Курс: 1 = ...</div>
+        </div>
+
+        <!-- Быстрые чипы популярных валют -->
+        <div style="margin-top:14px;">
+          <div style="font-size:0.75rem; color:var(--text-muted); margin-bottom:6px; font-weight:700; text-transform:uppercase;">Быстрый выбор валюты:</div>
+          <div class="chip-group" style="margin-bottom:0;">
+            <button class="chip btn-quick-currency" data-curr="USD">🇺🇸 USD</button>
+            <button class="chip btn-quick-currency" data-curr="EUR">🇪🇺 EUR</button>
+            <button class="chip btn-quick-currency" data-curr="RUB">🇷🇺 RUB</button>
+            <button class="chip btn-quick-currency" data-curr="KZT">🇰🇿 KZT</button>
+            <button class="chip btn-quick-currency" data-curr="CNY">🇨🇳 CNY</button>
+            <button class="chip btn-quick-currency" data-curr="TRY">🇹🇷 TRY</button>
+            <button class="chip btn-quick-currency" data-curr="AED">🇦🇪 AED</button>
+          </div>
+        </div>
+
+        <!-- Эта сумма в других валютах -->
+        <div style="margin-top:16px;">
+          <div style="font-size:0.75rem; color:var(--text-muted); margin-bottom:8px; font-weight:700; text-transform:uppercase;">Эта сумма в других валютах:</div>
+          <div id="converter-multi-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:8px;"></div>
+        </div>
+      </div>
+
+      <!-- Таблица популярных курсов к основной валюте -->
+      <div class="card">
+        <div class="card-title">
+          <span>Курсы основных валют к <span class="current-curr-code">RUB</span></span>
+        </div>
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Валюта</th>
+                <th>Код</th>
+                <th style="text-align:right;">Курс</th>
+              </tr>
+            </thead>
+            <tbody id="tbody-major-rates"></tbody>
+          </table>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ================= ВКЛАДКА 5: ИСТОРИЯ ================= -->
+    <section id="tab-history" class="tab-content">
+      
+      <!-- Сводка и панель действий -->
+      <div class="card" style="padding:14px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+          <div>
+            <div style="font-size:0.75rem; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Сохранённых месяцев</div>
+            <div id="history-total-count" style="font-size:1.4rem; font-weight:800;">0</div>
+          </div>
+          <button class="btn btn-sm btn-primary" id="btn-history-save-current" style="font-size:0.8rem; padding:6px 12px;">+ Текущий месяц</button>
+        </div>
+
+        <!-- Кнопки экспорта -->
+        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px; margin-top:8px;">
+          <button class="btn btn-sm btn-secondary" id="btn-export-csv" title="Скачать таблицу CSV" style="font-size:0.75rem; padding:6px 4px; text-align:center;">
+            📥 Скачать CSV
+          </button>
+          <button class="btn btn-sm btn-secondary" id="btn-copy-history-text" title="Скопировать отчёт текстом" style="font-size:0.75rem; padding:6px 4px; text-align:center;">
+            📋 Текст отчёта
+          </button>
+          <button class="btn btn-sm btn-secondary" id="btn-share-history" title="Поделиться через телефон" style="font-size:0.75rem; padding:6px 4px; text-align:center;">
+            🔗 Поделиться
+          </button>
+        </div>
+      </div>
+
+      <!-- График динамики выручки и прибыли (чистый SVG) -->
+      <div class="card" id="card-history-chart">
+        <div class="card-title">
+          <span>Динамика выручки и прибыли</span>
+        </div>
+        <div id="history-chart-container" style="width:100%; min-height:180px; display:flex; align-items:center; justify-content:center;"></div>
+        <div style="display:flex; justify-content:center; gap:16px; margin-top:8px; font-size:0.75rem; color:var(--text-secondary);">
+          <div style="display:flex; align-items:center; gap:6px;">
+            <span style="display:inline-block; width:12px; height:3px; background:#3b82f6; border-radius:2px;"></span>
+            <span>Выручка</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:6px;">
+            <span style="display:inline-block; width:12px; height:3px; background:#10b981; border-radius:2px;"></span>
+            <span>Прибыль</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Фильтры и поиск по истории -->
+      <div class="card" style="padding:12px;">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+          <div>
+            <label class="form-label" for="history-filter-niche" style="font-size:0.75rem;">Фильтр по нише</label>
+            <select id="history-filter-niche" class="form-input" style="padding:6px 10px; font-size:0.82rem;">
+              <option value="all">Все ниши</option>
+            </select>
+          </div>
+          <div>
+            <label class="form-label" for="history-search-input" style="font-size:0.75rem;">Поиск по заметке</label>
+            <input type="text" id="history-search-input" class="form-input" placeholder="Поиск..." style="padding:6px 10px; font-size:0.82rem;">
+          </div>
+        </div>
+      </div>
+
+      <!-- Список записей истории -->
+      <div id="history-list" style="display:flex; flex-direction:column; gap:10px;"></div>
+
+      <!-- Кнопка очистки всей истории -->
+      <div style="margin-top:16px; text-align:center;">
+        <button class="btn btn-sm btn-secondary" id="btn-clear-all-history" style="color:var(--accent-red); font-size:0.8rem;">
+          🗑️ Очистить всю историю
+        </button>
+      </div>
+
+    </section>
+
+    <!-- ================= ВКЛАДКА 6: ЕЩЁ (НОВЫЕ РАЗДЕЛЫ) ================= -->
+    <section id="tab-more" class="tab-content">
+      
+      <!-- 6.0: Главный хаб инструментов -->
+      <div id="more-hub-view">
+        <div class="card" style="padding:14px; margin-bottom:12px;">
+          <h2 style="font-size:1.15rem; font-weight:800; margin-bottom:4px;">Все инструменты бизнеса</h2>
+          <p style="font-size:0.82rem; color:var(--text-secondary);">
+            Калькуляторы, счета с печатью PDF, анализ выписок, конкуренты, цели и ИИ-помощники.
+          </p>
+        </div>
+
+        <!-- Группа 1: Расчёты и документы -->
+        <div style="margin-bottom:18px;">
+          <div style="font-size:0.78rem; font-weight:800; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.04em; margin-bottom:8px; padding-left:4px;">
+            Расчёты и документы
+          </div>
+          <div class="tools-grid">
+            
+            <button class="tool-card" data-open-tool="discounts">
+              <div class="tool-icon">🏷️</div>
+              <div class="tool-info">
+                <div class="tool-title">
+                  <span>Скидки и акции</span>
+                  <span class="badge-calc">Расчёт</span>
+                </div>
+                <div class="tool-desc">Сколько штук продать при скидке для сохранения прибыли</div>
+              </div>
+            </button>
+
+            <button class="tool-card" data-open-tool="invoices">
+              <div class="tool-icon">📄</div>
+              <div class="tool-info">
+                <div class="tool-title">
+                  <span>Счета и сметы</span>
+                  <span class="badge-calc">PDF A4</span>
+                </div>
+                <div class="tool-desc">Создание счетов с позициями, налогами и печатью PDF</div>
+              </div>
+            </button>
+
+            <button class="tool-card" data-open-tool="competitors">
+              <div class="tool-icon">🥊</div>
+              <div class="tool-info">
+                <div class="tool-title">
+                  <span>Конкуренты</span>
+                  <span class="badge-calc">Сравнение</span>
+                </div>
+                <div class="tool-desc">Сравнение цен, сильные стороны и ИИ-стратегия</div>
+              </div>
+            </button>
+
+            <button class="tool-card" data-open-tool="csv">
+              <div class="tool-icon">📊</div>
+              <div class="tool-info">
+                <div class="tool-title">
+                  <span>Импорт выписки CSV</span>
+                  <span class="badge-calc">Банк</span>
+                </div>
+                <div class="tool-desc">Авторазбор банковской выписки по статьям в 1 клик</div>
+              </div>
+            </button>
+
+            <button class="tool-card" data-open-tool="goals">
+              <div class="tool-icon">🎯</div>
+              <div class="tool-info">
+                <div class="tool-title">
+                  <span>Цели и привычки</span>
+                  <span class="badge-calc">Трекер</span>
+                </div>
+                <div class="tool-desc">Серия недель учета, недельные итоги и награды</div>
+              </div>
+            </button>
+
+          </div>
+        </div>
+
+        <!-- Группа 2: Маркетинг и ИИ (Gemini) -->
+        <div style="margin-bottom:18px;">
+          <div style="font-size:0.78rem; font-weight:800; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.04em; margin-bottom:8px; padding-left:4px;">
+            ИИ-маркетинг (Gemini Flash)
+          </div>
+          <div class="tools-grid">
+
+            <button class="tool-card" data-open-tool="textgen">
+              <div class="tool-icon">✍️</div>
+              <div class="tool-info">
+                <div class="tool-title">
+                  <span>Генератор текстов</span>
+                  <span class="badge-ai">ИИ</span>
+                </div>
+                <div class="tool-desc">Посты, акции, ответы на отзывы и рассылки в 3 вариантах</div>
+              </div>
+            </button>
+
+            <button class="tool-card" data-open-tool="contentplan">
+              <div class="tool-icon">📅</div>
+              <div class="tool-info">
+                <div class="tool-title">
+                  <span>Контент-план на 4 недели</span>
+                  <span class="badge-ai">ИИ</span>
+                </div>
+                <div class="tool-desc">План постов с темами, экспортом в Календарь (.ics) и CSV</div>
+              </div>
+            </button>
+
+            <button class="tool-card" data-open-tool="callaudit">
+              <div class="tool-icon">🎧</div>
+              <div class="tool-info">
+                <div class="tool-title">
+                  <span>Разговоры с клиентами</span>
+                  <span class="badge-ai">ИИ</span>
+                </div>
+                <div class="tool-desc">Оценка переписки и звонков 0-100, ошибки и шаблон ответа</div>
+              </div>
+            </button>
+
+            <button class="tool-card" data-open-tool="reviews">
+              <div class="tool-icon">⭐</div>
+              <div class="tool-info">
+                <div class="tool-title">
+                  <span>Сбор отзывов</span>
+                  <span class="badge-calc">Лояльность</span>
+                </div>
+                <div class="tool-desc">Шаблоны просьб со ссылкой на карты и трекер клиентов</div>
+              </div>
+            </button>
+
+          </div>
+        </div>
+
+        <!-- Группа 3: Команда -->
+        <div>
+          <div style="font-size:0.78rem; font-weight:800; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.04em; margin-bottom:8px; padding-left:4px;">
+            Безопасность и команда
+          </div>
+          <div class="tools-grid">
+            <button class="tool-card" data-open-tool="viewmode">
+              <div class="tool-icon">🔒</div>
+              <div class="tool-info">
+                <div class="tool-title">
+                  <span>Режим просмотра (PIN)</span>
+                  <span class="badge-calc">Защита</span>
+                </div>
+                <div class="tool-desc">Скрытие финансов и прибыли при показе сотруднику</div>
+              </div>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ================= 6.1: КАЛЬКУЛЯТОР АКЦИЙ И СКИДОК ================= -->
+      <div id="tool-view-discounts" class="tool-subview" style="display:none;">
+        <div class="subtab-header">
+          <button class="btn btn-sm btn-secondary btn-back-to-hub">← Все разделы</button>
+          <h3 style="font-size:1.05rem; font-weight:800; margin:0;">Калькулятор акций и скидок</h3>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <span>Параметры товара / услуги</span>
+            <button class="btn btn-sm btn-secondary" id="btn-example-discount">Попробовать на примере</button>
+          </div>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+            <div class="form-group">
+              <label class="form-label" for="disc-price">Текущая цена (₽)</label>
+              <input type="number" id="disc-price" class="form-input" value="1000" min="0" step="10">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="disc-cost">Себестоимость ед. (₽)</label>
+              <input type="number" id="disc-cost" class="form-input" value="600" min="0" step="10">
+            </div>
+          </div>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+            <div class="form-group">
+              <label class="form-label" for="disc-sales">Продажи в месяц (шт)</label>
+              <input type="number" id="disc-sales" class="form-input" value="100" min="1" step="1">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="disc-pct">Размер скидки (%)</label>
+              <input type="number" id="disc-pct" class="form-input" value="15" min="0" max="99" step="1">
+            </div>
+          </div>
+        </div>
+
+        <!-- Предупреждение об убытке -->
+        <div id="disc-danger-alert" style="display:none; background:var(--accent-red-bg); border:1px solid var(--accent-red); color:var(--accent-red); padding:12px 14px; border-radius:12px; font-weight:700; font-size:0.9rem; margin-bottom:12px;">
+          ⚠️ Внимание: Вы продаёте в убыток! Новая цена со скидкой ниже или равна себестоимости.
+        </div>
+
+        <!-- Результаты расчета скидки -->
+        <div class="card" id="disc-result-card">
+          <div class="card-title">
+            <span>Результаты моделирования скидки</span>
+          </div>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:12px;">
+            <div style="background:var(--bg-input); padding:12px; border-radius:12px; border:1px solid var(--border);">
+              <div style="font-size:0.75rem; color:var(--text-muted);">Новая цена со скидкой</div>
+              <div id="disc-res-new-price" style="font-size:1.25rem; font-weight:800; margin-top:2px;">850 ₽</div>
+            </div>
+            <div style="background:var(--bg-input); padding:12px; border-radius:12px; border:1px solid var(--border);">
+              <div style="font-size:0.75rem; color:var(--text-muted);">Новая маржа с единицы</div>
+              <div id="disc-res-unit-profit" style="font-size:1.25rem; font-weight:800; margin-top:2px; color:var(--accent-green);">250 ₽ (29,4%)</div>
+            </div>
+          </div>
+
+          <div style="text-align:center; padding:16px 12px; background:var(--bg-input); border-radius:14px; border:1px solid var(--border); margin-bottom:12px;">
+            <div style="font-size:0.8rem; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Нужно продавать со скидкой</div>
+            <div id="disc-res-required-qty" style="font-size:2.4rem; font-weight:800; color:var(--accent-green); margin:4px 0;">167 шт.</div>
+            <div id="disc-res-growth-pct" style="font-size:0.95rem; font-weight:700; color:var(--accent-blue);">
+              Рост продаж на +67%
+            </div>
+            <div style="font-size:0.78rem; color:var(--text-secondary); margin-top:4px;">
+              чтобы сохранить прежнюю прибыль <strong id="disc-res-old-profit">40 000 ₽</strong>
+            </div>
+          </div>
+
+          <div id="disc-res-explanation" style="font-size:0.85rem; line-height:1.55; color:var(--text-secondary);">
+            <!-- Dynamic explanation -->
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= 6.2: СЧЕТА И СМЕТЫ ================= -->
+      <div id="tool-view-invoices" class="tool-subview" style="display:none;">
+        <div class="subtab-header">
+          <button class="btn btn-sm btn-secondary btn-back-to-hub">← Все разделы</button>
+          <h3 style="font-size:1.05rem; font-weight:800; margin:0;">Счета и сметы</h3>
+        </div>
+
+        <!-- Список сохранённых счетов -->
+        <div class="card" style="margin-bottom:12px;">
+          <div class="card-title">
+            <span>Сохранённые счета</span>
+            <button class="btn btn-sm btn-primary" id="btn-new-invoice">+ Новый счёт</button>
+          </div>
+          <div id="invoices-list" style="display:flex; flex-direction:column; gap:8px;">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+
+        <!-- Форма составления счёта -->
+        <div class="card" id="invoice-editor-card">
+          <div class="card-title">
+            <span id="invoice-editor-title">Редактирование счёта</span>
+            <span class="card-badge badge-green" id="inv-badge-num">Счёт № 1</span>
+          </div>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+            <div class="form-group">
+              <label class="form-label" for="inv-seller">Данные продавца</label>
+              <input type="text" id="inv-seller" class="form-input" placeholder="ИП Иванов А.В., ИНН 1234567890">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="inv-client">Клиент (покупатель)</label>
+              <input type="text" id="inv-client" class="form-input" placeholder="ООО «Партнёр», тел. +7 999...">
+            </div>
+          </div>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+            <div class="form-group">
+              <label class="form-label" for="inv-date">Дата счёта</label>
+              <input type="date" id="inv-date" class="form-input">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="inv-due-date">Срок оплаты</label>
+              <input type="date" id="inv-due-date" class="form-input">
+            </div>
+          </div>
+
+          <!-- Таблица позиций счёта -->
+          <div style="margin-top:12px; margin-bottom:12px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+              <span style="font-weight:700; font-size:0.88rem;">Позиции счёта:</span>
+              <button class="btn btn-sm btn-secondary" id="btn-add-inv-item">+ Добавить позицию</button>
+            </div>
+            <div class="table-responsive">
+              <table class="data-table" id="inv-items-table">
+                <thead>
+                  <tr>
+                    <th>Наименование</th>
+                    <th style="width:70px; text-align:right;">Кол-во</th>
+                    <th style="width:90px; text-align:right;">Цена</th>
+                    <th style="width:100px; text-align:right;">Сумма</th>
+                    <th style="width:40px;"></th>
+                  </tr>
+                </thead>
+                <tbody id="inv-items-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+            <div class="form-group">
+              <label class="form-label" for="inv-discount-pct">Скидка (%)</label>
+              <input type="number" id="inv-discount-pct" class="form-input" value="0" min="0" max="100">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="inv-tax-rate">Ставка налога (%)</label>
+              <input type="number" id="inv-tax-rate" class="form-input" value="0" min="0" max="100" placeholder="0 или 6, 20">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="inv-note">Примечание к оплате</label>
+            <input type="text" id="inv-note" class="form-input" placeholder="Назначение платежа: Оплата по счёту №... Без НДС">
+          </div>
+
+          <!-- Итоги счёта -->
+          <div style="background:var(--bg-input); padding:14px; border-radius:14px; border:1px solid var(--border); margin:14px 0;">
+            <div style="display:flex; justify-content:space-between; margin-bottom:4px; font-size:0.85rem;">
+              <span style="color:var(--text-muted);">Подытог:</span>
+              <strong id="inv-calc-subtotal">0 ₽</strong>
+            </div>
+            <div style="display:flex; justify-content:space-between; margin-bottom:4px; font-size:0.85rem;">
+              <span style="color:var(--text-muted);">Скидка:</span>
+              <span id="inv-calc-discount" style="color:var(--accent-green); font-weight:700;">-0 ₽</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; margin-bottom:8px; font-size:0.85rem;">
+              <span style="color:var(--text-muted);">Налог:</span>
+              <span id="inv-calc-tax">0 ₽</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--border); padding-top:8px;">
+              <span style="font-weight:800; font-size:1.05rem;">ИТОГО К ОПЛАТЕ:</span>
+              <span id="inv-calc-total" style="font-size:1.5rem; font-weight:800; color:var(--accent-green);">0 ₽</span>
+            </div>
+          </div>
+
+          <!-- Кнопки управления счётом -->
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+            <button class="btn btn-primary" id="btn-save-invoice">💾 Сохранить счёт</button>
+            <button class="btn btn-secondary" id="btn-print-invoice" style="border-color:var(--accent-blue); color:var(--accent-blue);">🖨️ Скачать PDF / Печать</button>
+          </div>
+
+          <div style="font-size:0.75rem; color:var(--text-muted); margin-top:10px; text-align:center;">
+            * Документ не заменяет бухгалтерский (носит информационный характер).
+          </div>
+        </div>
+
+        <!-- Печатный чистый бланк (для window.print()) -->
+        <div id="invoice-printable-sheet" class="invoice-print-area print-only" style="display:none;"></div>
+      </div>
+
+      <!-- ================= 6.3: КОНКУРЕНТЫ ================= -->
+      <div id="tool-view-competitors" class="tool-subview" style="display:none;">
+        <div class="subtab-header">
+          <button class="btn btn-sm btn-secondary btn-back-to-hub">← Все разделы</button>
+          <h3 style="font-size:1.05rem; font-weight:800; margin:0;">Анализ конкурентов</h3>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <span>Ваше ценовое позиционирование</span>
+          </div>
+          <div class="form-group" style="margin-bottom:0;">
+            <label class="form-label" for="comp-my-price">Ваша цена за ключевую услугу / товар (₽)</label>
+            <input type="number" id="comp-my-price" class="form-input" placeholder="1000" value="1000">
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <span>Список конкурентов</span>
+            <button class="btn btn-sm btn-secondary" id="btn-add-competitor">+ Добавить</button>
+          </div>
+
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Конкурент</th>
+                  <th style="text-align:right;">Цена</th>
+                  <th>Акции</th>
+                  <th>Сильная сторона</th>
+                  <th>Слабая сторона</th>
+                  <th style="width:36px;"></th>
+                </tr>
+              </thead>
+              <tbody id="competitors-tbody"></tbody>
+            </table>
+          </div>
+
+          <!-- Сводка позиционирования -->
+          <div style="background:var(--bg-input); padding:12px; border-radius:12px; border:1px solid var(--border); margin-top:14px; display:flex; justify-content:space-between; align-items:center;">
+            <div>
+              <div style="font-size:0.75rem; color:var(--text-muted);">Средняя цена конкурентов</div>
+              <div id="comp-avg-price" style="font-size:1.2rem; font-weight:800; margin-top:2px;">0 ₽</div>
+            </div>
+            <div id="comp-position-badge" class="card-badge badge-green" style="font-size:0.85rem; padding:6px 12px;">
+              Позиция рассчитывается...
+            </div>
+          </div>
+        </div>
+
+        <!-- Карточка ИИ-стратегии -->
+        <div class="card">
+          <div class="ai-notice-banner">
+            ✨ Ваш текст отправляется в Gemini. Не вводите персональные данные клиентов. Ответы ориентировочные.
+          </div>
+          <button class="btn btn-primary" id="btn-ask-ai-competitors" style="width:100%; display:flex; align-items:center; justify-content:center; gap:8px;">
+            <span>💡 Что мне сделать? (ИИ-разбор стратегии)</span>
+          </button>
+
+          <div id="comp-ai-result" style="display:none; margin-top:14px; background:var(--bg-input); padding:14px; border-radius:14px; border:1px solid var(--border); line-height:1.6; font-size:0.9rem;">
+            <div id="comp-ai-text"></div>
+            <div style="display:flex; gap:8px; margin-top:12px;">
+              <button class="btn btn-sm btn-secondary" id="btn-copy-comp-ai">📋 Копировать</button>
+              <button class="btn btn-sm btn-secondary" id="btn-share-comp-ai">🔗 Поделиться</button>
+              <button class="btn btn-sm btn-secondary" id="btn-retry-comp-ai">🔄 Ещё вариант</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= 6.4: ИМПОРТ ИЗ CSV ================= -->
+      <div id="tool-view-csv" class="tool-subview" style="display:none;">
+        <div class="subtab-header">
+          <button class="btn btn-sm btn-secondary btn-back-to-hub">← Все разделы</button>
+          <h3 style="font-size:1.05rem; font-weight:800; margin:0;">Импорт выписки CSV</h3>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <span>Загрузка файла банковской выписки</span>
+          </div>
+          <p style="font-size:0.82rem; color:var(--text-secondary); margin-bottom:12px;">
+            Выберите CSV файл вашего банка. Файл обрабатывается прямо на телефоне и никуда не передается.
+          </p>
+          <input type="file" id="csv-file-input" accept=".csv,text/csv,text/plain" class="form-input" style="padding-top:10px;">
+          <div id="csv-status-info" style="font-size:0.75rem; color:var(--text-muted); margin-top:6px;"></div>
+        </div>
+
+        <!-- Настройка столбцов CSV -->
+        <div class="card" id="csv-columns-card" style="display:none;">
+          <div class="card-title">
+            <span>Сопоставление столбцов</span>
+            <span class="card-badge badge-blue" id="csv-encoding-badge">UTF-8</span>
+          </div>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; margin-bottom:12px;">
+            <div>
+              <label class="form-label" for="csv-col-date" style="font-size:0.75rem;">Колонка даты</label>
+              <select id="csv-col-date" class="form-input" style="font-size:0.82rem;"></select>
+            </div>
+            <div>
+              <label class="form-label" for="csv-col-amount" style="font-size:0.75rem;">Колонка суммы</label>
+              <select id="csv-col-amount" class="form-input" style="font-size:0.82rem;"></select>
+            </div>
+            <div>
+              <label class="form-label" for="csv-col-desc" style="font-size:0.75rem;">Назначение платежа</label>
+              <select id="csv-col-desc" class="form-input" style="font-size:0.82rem;"></select>
+            </div>
+          </div>
+
+          <button class="btn btn-secondary" id="btn-parse-csv-rows" style="width:100%;">Разобрать операции</button>
+        </div>
+
+        <!-- Итоги и категории выписки -->
+        <div class="card" id="csv-results-card" style="display:none;">
+          <div class="card-title">
+            <span>Распознанные итоги по категориям</span>
+          </div>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:14px;">
+            <div style="background:var(--bg-input); padding:10px; border-radius:10px; border:1px solid var(--border);">
+              <div style="font-size:0.75rem; color:var(--text-muted);">Доход (поступления)</div>
+              <div id="csv-sum-rev" style="font-weight:800; font-size:1.15rem; color:var(--accent-green);">0 ₽</div>
+            </div>
+            <div style="background:var(--bg-input); padding:10px; border-radius:10px; border:1px solid var(--border);">
+              <div style="font-size:0.75rem; color:var(--text-muted);">Аренда</div>
+              <div id="csv-sum-rent" style="font-weight:800; font-size:1.15rem;">0 ₽</div>
+            </div>
+            <div style="background:var(--bg-input); padding:10px; border-radius:10px; border:1px solid var(--border);">
+              <div style="font-size:0.75rem; color:var(--text-muted);">Зарплаты (ФОТ)</div>
+              <div id="csv-sum-sal" style="font-weight:800; font-size:1.15rem;">0 ₽</div>
+            </div>
+            <div style="background:var(--bg-input); padding:10px; border-radius:10px; border:1px solid var(--border);">
+              <div style="font-size:0.75rem; color:var(--text-muted);">Реклама</div>
+              <div id="csv-sum-ads" style="font-weight:800; font-size:1.15rem;">0 ₽</div>
+            </div>
+            <div style="background:var(--bg-input); padding:10px; border-radius:10px; border:1px solid var(--border);">
+              <div style="font-size:0.75rem; color:var(--text-muted);">Прочие расходы</div>
+              <div id="csv-sum-oth" style="font-weight:800; font-size:1.15rem;">0 ₽</div>
+            </div>
+            <div style="background:var(--bg-input); padding:10px; border-radius:10px; border:1px solid var(--border);">
+              <div style="font-size:0.75rem; color:var(--text-muted);">Всего расходов</div>
+              <div id="csv-sum-exp" style="font-weight:800; font-size:1.15rem; color:var(--accent-red);">0 ₽</div>
+            </div>
+          </div>
+
+          <button class="btn btn-primary" id="btn-apply-csv-to-analysis" style="width:100%;">
+            📥 Добавить суммы в текущий месяц (Анализ)
+          </button>
+
+          <!-- Таблица строк выписки -->
+          <div style="margin-top:16px;">
+            <div style="font-weight:700; font-size:0.85rem; margin-bottom:8px;">Операции (первые 30 строк):</div>
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Дата</th>
+                    <th>Описание</th>
+                    <th style="text-align:right;">Сумма</th>
+                    <th>Категория</th>
+                  </tr>
+                </thead>
+                <tbody id="csv-rows-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= 6.5: ЦЕЛИ И ПРИВЫЧКИ ================= -->
+      <div id="tool-view-goals" class="tool-subview" style="display:none;">
+        <div class="subtab-header">
+          <button class="btn btn-sm btn-secondary btn-back-to-hub">← Все разделы</button>
+          <h3 style="font-size:1.05rem; font-weight:800; margin:0;">Цели и привычки</h3>
+        </div>
+
+        <!-- Карточка серии недель -->
+        <div class="card" style="text-align:center; padding:18px;">
+          <div style="font-size:2.5rem; margin-bottom:4px;">🔥</div>
+          <div id="streak-title" style="font-size:1.35rem; font-weight:800;">Считаю 1 неделю подряд</div>
+          <div style="font-size:0.82rem; color:var(--text-secondary); margin-top:2px;">
+            Регулярный финансовый учет помогает вовремя замечать кассовые разрывы.
+          </div>
+        </div>
+
+        <!-- Недельный итог одним экраном -->
+        <div class="card">
+          <div class="card-title">
+            <span>Недельный итог</span>
+            <span class="card-badge badge-blue">Текущая неделя</span>
+          </div>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+            <div style="background:var(--bg-input); padding:12px; border-radius:12px; border:1px solid var(--border);">
+              <div style="font-size:0.75rem; color:var(--text-muted);">Доход недели</div>
+              <div id="week-revenue" style="font-size:1.25rem; font-weight:800; margin-top:2px;">0 ₽</div>
+            </div>
+            <div style="background:var(--bg-input); padding:12px; border-radius:12px; border:1px solid var(--border);">
+              <div style="font-size:0.75rem; color:var(--text-muted);">Прибыль недели</div>
+              <div id="week-profit" style="font-size:1.25rem; font-weight:800; margin-top:2px; color:var(--accent-green);">0 ₽</div>
+            </div>
+          </div>
+          <div id="week-delta-note" style="margin-top:8px; font-size:0.8rem; color:var(--text-secondary);">
+            Изменение к прошлой неделе: расчёт по сохраненным данным.
+          </div>
+        </div>
+
+        <!-- Цель на месяц -->
+        <div class="card">
+          <div class="card-title">
+            <span>Цель на месяц</span>
+          </div>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:12px;">
+            <div>
+              <label class="form-label" for="goal-type">Тип цели</label>
+              <select id="goal-type" class="form-input">
+                <option value="profit">Чистая прибыль</option>
+                <option value="revenue">Выручка</option>
+              </select>
+            </div>
+            <div>
+              <label class="form-label" for="goal-target-amount">Целевая сумма (₽)</label>
+              <input type="number" id="goal-target-amount" class="form-input" value="200000" step="5000">
+            </div>
+          </div>
+
+          <!-- Прогресс цели -->
+          <div style="margin:16px 0;">
+            <div style="display:flex; justify-content:space-between; font-size:0.85rem; font-weight:700; margin-bottom:6px;">
+              <span>Выполнение цели:</span>
+              <span id="goal-pct-text" style="color:var(--accent-green);">75%</span>
+            </div>
+            <div style="height:12px; background:var(--bg-input); border-radius:6px; overflow:hidden; border:1px solid var(--border);">
+              <div id="goal-progress-bar" style="height:100%; width:75%; background:linear-gradient(90deg, #10b981, #059669); border-radius:6px; transition:width 0.8s ease;"></div>
+            </div>
+            <div style="display:flex; justify-content:space-between; font-size:0.75rem; color:var(--text-muted); margin-top:4px;">
+              <span id="goal-current-amount">150 000 ₽</span>
+              <span id="goal-target-label">из 200 000 ₽</span>
+            </div>
+          </div>
+
+          <!-- Анимированная награда при достижении цели -->
+          <div id="goal-reward-card" style="display:none; text-align:center; padding:16px; background:linear-gradient(135deg, rgba(16,185,129,0.2), rgba(59,130,246,0.2)); border:1px solid var(--accent-green); border-radius:14px;">
+            <div style="font-size:2.2rem;">🏆</div>
+            <div style="font-size:1.15rem; font-weight:800; color:var(--accent-green); margin-top:4px;">Поздравляем! Цель месяца достигнута!</div>
+            <div style="font-size:0.8rem; color:var(--text-secondary); margin-top:2px;">Вы перевыполнили финансовый план. Время зафиксировать прибыль!</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= 6.6: ГЕНЕРАТОР ТЕКСТОВ ================= -->
+      <div id="tool-view-textgen" class="tool-subview" style="display:none;">
+        <div class="subtab-header">
+          <button class="btn btn-sm btn-secondary btn-back-to-hub">← Все разделы</button>
+          <h3 style="font-size:1.05rem; font-weight:800; margin:0;">Генератор текстов</h3>
+        </div>
+
+        <div class="ai-notice-banner">
+          ✨ Ваш текст отправляется в Gemini. Не вводите персональные данные клиентов. Ответы ориентировочные.
+        </div>
+
+        <div class="card">
+          <div class="form-group">
+            <label class="form-label" for="tg-type">Тип текста</label>
+            <select id="tg-type" class="form-input">
+              <option value="post">Пост для соцсетей</option>
+              <option value="promo">Текст акции / скидки</option>
+              <option value="bad_review">Ответ на плохой отзыв</option>
+              <option value="good_review">Ответ на хороший отзыв</option>
+              <option value="client_msg">Сообщение клиенту (напоминание, возврат, спасибо)</option>
+              <option value="product_desc">Описание товара или услуги</option>
+              <option value="sms">Короткая SMS / Telegram рассылка</option>
+            </select>
+          </div>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+            <div class="form-group">
+              <label class="form-label" for="tg-biz-name">Название бизнеса</label>
+              <input type="text" id="tg-biz-name" class="form-input" placeholder="Кофейня «Утро»">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="tg-city">Город</label>
+              <input type="text" id="tg-city" class="form-input" placeholder="Москва">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="tg-tone">Тон текста</label>
+            <select id="tg-tone" class="form-input">
+              <option value="friendly">Дружелюбный и открытый</option>
+              <option value="business">Деловой и уважительный</option>
+              <option value="humor">С легким юмором</option>
+            </select>
+          </div>
+
+          <div class="form-group" id="tg-review-group" style="display:none;">
+            <label class="form-label" for="tg-review-text">Текст отзыва клиента</label>
+            <textarea id="tg-review-text" class="form-input" rows="3" placeholder="Вставьте сюда текст отзыва..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="tg-desc">О чем написать (коротко суть)</label>
+            <textarea id="tg-desc" class="form-input" rows="2" placeholder="Например: скидка 20% на все десерты по будням до 12:00..."></textarea>
+          </div>
+
+          <button class="btn btn-primary" id="btn-generate-texts" style="width:100%;">
+            ✨ Сгенерировать 3 варианта текста
+          </button>
+        </div>
+
+        <!-- Результаты генерации текстов -->
+        <div id="tg-results-container" style="display:none; display:flex; flex-direction:column; gap:12px;"></div>
+      </div>
+
+      <!-- ================= 6.7: КОНТЕНТ-ПЛАН НА МЕСЯЦ ================= -->
+      <div id="tool-view-contentplan" class="tool-subview" style="display:none;">
+        <div class="subtab-header">
+          <button class="btn btn-sm btn-secondary btn-back-to-hub">← Все разделы</button>
+          <h3 style="font-size:1.05rem; font-weight:800; margin:0;">Контент-план на 4 недели</h3>
+        </div>
+
+        <div class="ai-notice-banner">
+          ✨ Ваш текст отправляется в Gemini. Не вводите персональные данные клиентов. Ответы ориентировочные.
+        </div>
+
+        <div class="card">
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+            <div class="form-group">
+              <label class="form-label" for="cp-audience">Целевая аудитория</label>
+              <input type="text" id="cp-audience" class="form-input" placeholder="Молодежь, семьи, предприниматели...">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="cp-goal">Главная цель</label>
+              <select id="cp-goal" class="form-input">
+                <option value="sales">Прямые продажи и акции</option>
+                <option value="branding">Узнаваемость и доверие</option>
+                <option value="retention">Возвращение клиентов</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+            <div class="form-group">
+              <label class="form-label" for="cp-networks">Соцсети / Каналы</label>
+              <input type="text" id="cp-networks" class="form-input" value="Telegram, ВКонтакте">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="cp-freq">Постов в неделю</label>
+              <select id="cp-freq" class="form-input">
+                <option value="3">3 поста в неделю</option>
+                <option value="2">2 поста в неделю</option>
+                <option value="4">4 поста в неделю</option>
+                <option value="5">5 постов в неделю</option>
+              </select>
+            </div>
+          </div>
+
+          <button class="btn btn-primary" id="btn-generate-contentplan" style="width:100%;">
+            📅 Сгенерировать контент-план
+          </button>
+        </div>
+
+        <!-- Вывод таблицы плана -->
+        <div class="card" id="cp-results-card" style="display:none;">
+          <div class="card-title">
+            <span>План публикаций на 4 недели</span>
+          </div>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px; margin-bottom:12px;">
+            <button class="btn btn-sm btn-secondary" id="btn-copy-all-cp">📋 Скопировать всё</button>
+            <button class="btn btn-sm btn-secondary" id="btn-download-cp-ics">📥 Скачать .ics</button>
+            <button class="btn btn-sm btn-secondary" id="btn-download-cp-csv">📊 Скачать CSV</button>
+          </div>
+
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th style="width:65px;">Дата</th>
+                  <th>Формат</th>
+                  <th>Тема и идея</th>
+                  <th>CTA</th>
+                  <th style="width:45px;"></th>
+                </tr>
+              </thead>
+              <tbody id="cp-table-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= 6.8: АНАЛИЗ РАЗГОВОРОВ С КЛИЕНТАМИ ================= -->
+      <div id="tool-view-callaudit" class="tool-subview" style="display:none;">
+        <div class="subtab-header">
+          <button class="btn btn-sm btn-secondary btn-back-to-hub">← Все разделы</button>
+          <h3 style="font-size:1.05rem; font-weight:800; margin:0;">Анализ разговоров с клиентами</h3>
+        </div>
+
+        <div class="ai-notice-banner">
+          ⚠️ Запись и анализ разговоров требуют согласия участников и соблюдения закона о персональных данных вашей страны. Не вводите персональные данные клиентов.
+        </div>
+
+        <div class="card">
+          <div class="form-group">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+              <label class="form-label" for="call-text-input" style="margin-bottom:0;">Текст диалога / переписки / звонка</label>
+              <button class="btn btn-sm btn-secondary" id="btn-audio-info-note" style="font-size:0.75rem; padding:2px 8px;">Аудио?</button>
+            </div>
+            <textarea id="call-text-input" class="form-input" rows="6" placeholder="Вставьте сюда текст диалога или сообщения... Например:
+Менеджер: Здравствуйте, чем могу помочь?
+Клиент: Здравствуйте, сколько стоит доставка?
+Менеджер: 500 рублей.
+Клиент: Понятно, спасибо, подумаю."></textarea>
+          </div>
+
+          <div style="display:flex; gap:8px;">
+            <button class="btn btn-primary" id="btn-audit-call" style="flex:1;">
+              🔍 Оценить разговор (0-100)
+            </button>
+            <button class="btn btn-secondary" id="btn-sample-call" style="width:auto; padding:0 12px; font-size:0.82rem;">
+              Пример
+            </button>
+          </div>
+        </div>
+
+        <!-- Результаты разбора звонка -->
+        <div class="card" id="call-results-card" style="display:none;">
+          <div class="card-title">
+            <span>Аудит разговора менеджера</span>
+            <span class="card-badge" id="call-score-badge">75 / 100</span>
+          </div>
+
+          <!-- Критерии 0-20 -->
+          <div id="call-breakdown-bars" style="display:flex; flex-direction:column; gap:8px; margin-bottom:14px;"></div>
+
+          <div id="call-details-box" style="line-height:1.6; font-size:0.88rem;"></div>
+
+          <div style="display:flex; gap:8px; margin-top:14px;">
+            <button class="btn btn-sm btn-secondary" id="btn-copy-call-audit">📋 Копировать разбор</button>
+            <button class="btn btn-sm btn-secondary" id="btn-share-call-audit">🔗 Поделиться</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= 6.9: СБОР ОТЗЫВОВ ================= -->
+      <div id="tool-view-reviews" class="tool-subview" style="display:none;">
+        <div class="subtab-header">
+          <button class="btn btn-sm btn-secondary btn-back-to-hub">← Все разделы</button>
+          <h3 style="font-size:1.05rem; font-weight:800; margin:0;">Сбор отзывов</h3>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <span>Ссылка на карточку вашего бизнеса</span>
+          </div>
+          <div class="form-group" style="margin-bottom:0;">
+            <input type="text" id="rev-biz-link" class="form-input" placeholder="https://yandex.ru/maps/... или https://2gis.ru/...">
+          </div>
+          <div style="font-size:0.75rem; color:var(--text-muted); margin-top:6px;">
+            Ссылка автоматически подставится в сообщения ниже для отправки клиентам в WhatsApp / Telegram.
+          </div>
+        </div>
+
+        <!-- Шаблоны сообщений клиентам -->
+        <div class="card">
+          <div class="card-title">
+            <span>Готовые сообщения для просьбы об отзыве</span>
+          </div>
+
+          <!-- Шаблон 1: Дружелюбный -->
+          <div style="background:var(--bg-input); padding:12px; border-radius:12px; border:1px solid var(--border); margin-bottom:10px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+              <span style="font-weight:700; font-size:0.85rem;">😊 Дружелюбный</span>
+              <div style="display:flex; gap:6px;">
+                <button class="btn btn-sm btn-secondary btn-copy-rev-tpl" data-tpl="1" style="font-size:0.75rem; padding:2px 8px;">Копировать</button>
+                <button class="btn btn-sm btn-secondary btn-share-rev-tpl" data-tpl="1" style="font-size:0.75rem; padding:2px 8px;">Поделиться</button>
+              </div>
+            </div>
+            <div id="rev-tpl-text-1" style="font-size:0.85rem; line-height:1.5; color:var(--text-secondary);">
+              Здравствуйте! Спасибо, что выбираете нас. Нам очень важно ваше мнение! Если всё понравилось, оставьте, пожалуйста, короткий отзыв по ссылке: [ссылка] — это очень поможет нашей команде!
+            </div>
+          </div>
+
+          <!-- Шаблон 2: Деловой -->
+          <div style="background:var(--bg-input); padding:12px; border-radius:12px; border:1px solid var(--border); margin-bottom:10px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+              <span style="font-weight:700; font-size:0.85rem;">👔 Деловой</span>
+              <div style="display:flex; gap:6px;">
+                <button class="btn btn-sm btn-secondary btn-copy-rev-tpl" data-tpl="2" style="font-size:0.75rem; padding:2px 8px;">Копировать</button>
+                <button class="btn btn-sm btn-secondary btn-share-rev-tpl" data-tpl="2" style="font-size:0.75rem; padding:2px 8px;">Поделиться</button>
+              </div>
+            </div>
+            <div id="rev-tpl-text-2" style="font-size:0.85rem; line-height:1.5; color:var(--text-secondary);">
+              Добрый день! Будем признательны за обратную связь о качестве нашего обслуживания. Ваш отзыв помогает нам становиться лучше: [ссылка]
+            </div>
+          </div>
+
+          <!-- Шаблон 3: Короткий -->
+          <div style="background:var(--bg-input); padding:12px; border-radius:12px; border:1px solid var(--border);">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+              <span style="font-weight:700; font-size:0.85rem;">⚡ Короткий</span>
+              <div style="display:flex; gap:6px;">
+                <button class="btn btn-sm btn-secondary btn-copy-rev-tpl" data-tpl="3" style="font-size:0.75rem; padding:2px 8px;">Копировать</button>
+                <button class="btn btn-sm btn-secondary btn-share-rev-tpl" data-tpl="3" style="font-size:0.75rem; padding:2px 8px;">Поделиться</button>
+              </div>
+            </div>
+            <div id="rev-tpl-text-3" style="font-size:0.85rem; line-height:1.5; color:var(--text-secondary);">
+              Понравился визит? Оцените нас за 30 секунд: [ссылка] Спасибо!
+            </div>
+          </div>
+        </div>
+
+        <!-- Трекер обращений к клиентам -->
+        <div class="card">
+          <div class="card-title">
+            <span>Журнал просьб об отзыве</span>
+            <span class="card-badge badge-blue" id="rev-stats-badge">Просили 0 / Ответили 0</span>
+          </div>
+
+          <div style="display:grid; grid-template-columns:1fr auto; gap:8px; margin-bottom:12px;">
+            <input type="text" id="rev-client-name" class="form-input" placeholder="Имя клиента (например, Алексей)...">
+            <button class="btn btn-primary" id="btn-add-rev-client" style="width:auto; padding:0 16px;">+ Добавить</button>
+          </div>
+
+          <div id="rev-clients-list" style="display:flex; flex-direction:column; gap:6px;"></div>
+
+          <div style="font-size:0.75rem; color:var(--text-muted); margin-top:12px; text-align:center;">
+            * Мы не предлагаем платить за отзывы и не занимаемся накруткой: собирайте только реальные отзывы довольных клиентов.
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= 6.10: РЕЖИМ ПРОСМОТРА ================= -->
+      <div id="tool-view-viewmode" class="tool-subview" style="display:none;">
+        <div class="subtab-header">
+          <button class="btn btn-sm btn-secondary btn-back-to-hub">← Все разделы</button>
+          <h3 style="font-size:1.05rem; font-weight:800; margin:0;">Режим просмотра (Команда)</h3>
+        </div>
+
+        <div class="card" style="border-left:4px solid var(--accent-blue);">
+          <div style="font-weight:700; font-size:0.92rem; margin-bottom:4px;">Защита на одном устройстве</div>
+          <p style="font-size:0.82rem; color:var(--text-secondary); line-height:1.5;">
+            Это защита на одном телефоне, а не отдельные аккаунты. Для настоящей работы команды нужен сервер. При включении режима просмотра скрываются доходы, расходы и прибыль, а сотрудник видит только разрешенные задачи.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <span>Настройка PIN-кода владельца</span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="vm-pin-input">PIN-код для разблокировки (4 цифры)</label>
+            <input type="password" id="vm-pin-input" class="form-input" maxlength="4" placeholder="••••" inputmode="numeric" style="letter-spacing:6px; font-size:1.2rem; text-align:center; max-width:200px;">
+          </div>
+          <button class="btn btn-secondary" id="btn-save-vm-pin" style="width:auto; padding:8px 16px;">Сохранить PIN-код</button>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <span>Разрешенные разделы для сотрудника</span>
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:16px;">
+            <label style="display:flex; align-items:center; gap:10px; font-size:0.9rem; cursor:pointer;">
+              <input type="checkbox" id="vm-allow-invoices" checked style="width:18px; height:18px;">
+              <span>📄 Счета и сметы</span>
+            </label>
+            <label style="display:flex; align-items:center; gap:10px; font-size:0.9rem; cursor:pointer;">
+              <input type="checkbox" id="vm-allow-competitors" checked style="width:18px; height:18px;">
+              <span>🥊 Конкуренты</span>
+            </label>
+            <label style="display:flex; align-items:center; gap:10px; font-size:0.9rem; cursor:pointer;">
+              <input type="checkbox" id="vm-allow-contentplan" checked style="width:18px; height:18px;">
+              <span>📅 Контент-план</span>
+            </label>
+            <label style="display:flex; align-items:center; gap:10px; font-size:0.9rem; cursor:pointer;">
+              <input type="checkbox" id="vm-allow-reviews" checked style="width:18px; height:18px;">
+              <span>⭐ Сбор отзывов</span>
+            </label>
+            <label style="display:flex; align-items:center; gap:10px; font-size:0.9rem; cursor:pointer;">
+              <input type="checkbox" id="vm-allow-discounts" checked style="width:18px; height:18px;">
+              <span>🏷️ Калькулятор скидок</span>
+            </label>
+          </div>
+
+          <button class="btn btn-primary" id="btn-toggle-viewmode" style="width:100%;">
+            🔒 Включить Режим Просмотра
+          </button>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- НИЖНЕЕ ПЛАВАЮЩЕЕ МЕНЮ (6 ВКЛАДОК: С ПРОКРУТКОЙ ИЛИ РАЗДЕЛОМ ЕЩЁ) -->
+  <nav class="bottom-nav no-print">
+    <button class="nav-item active" data-tab="analysis">
+      <svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+      <span>Анализ</span>
+    </button>
+    <button class="nav-item" data-tab="whatif">
+      <svg viewBox="0 0 24 24"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
+      <span>Что если</span>
+    </button>
+    <button class="nav-item" data-tab="advisor">
+      <svg viewBox="0 0 24 24"><path d="M12 2a8 8 0 0 0-8 8c0 3.36 2.08 6.23 5 7.37V20a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2v-2.63c2.92-1.14 5-4.01 5-7.37a8 8 0 0 0-8-8z"/><path d="M10 9h4"/><path d="M12 7v4"/></svg>
+      <span>Советник</span>
+    </button>
+    <button class="nav-item" data-tab="currencies">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 6v12"/></svg>
+      <span>Валюты</span>
+    </button>
+    <button class="nav-item" data-tab="history">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      <span>История</span>
+    </button>
+    <button class="nav-item" data-tab="more">
+      <svg viewBox="0 0 24 24"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>
+      <span>Ещё</span>
+    </button>
+  </nav>
+
+  <!-- КОНТЕЙНЕР ДЛЯ ВСплывающих TOAST УВЕДОМЛЕНИЙ -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- МОДАЛЬНОЕ ОКНО 1: ПРИВЕТСТВИЕ / ОБУЧЕНИЕ (3 ШАГА) -->
+  <div class="modal-overlay" id="modal-onboarding">
+    <div class="modal-sheet">
+      <div class="modal-header">
+        <h3 class="modal-title">Добро пожаловать! 👋</h3>
+        <button class="close-btn" id="btn-close-onboarding">&times;</button>
+      </div>
+      
+      <div style="display:flex; flex-direction:column; gap:16px; margin-bottom:20px;">
+        <div style="display:flex; gap:12px; align-items:flex-start;">
+          <div style="background:var(--accent-green-bg); color:var(--accent-green); width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:800; flex-shrink:0;">1</div>
+          <div>
+            <div style="font-weight:700; font-size:0.95rem;">Что умеет приложение</div>
+            <div style="font-size:0.85rem; color:var(--text-secondary); margin-top:2px;">
+              Считает реальную прибыль кодом, сравнивает затраты с нормами вашей ниши, формирует счета с печатью PDF и дает ИИ-советы.
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex; gap:12px; align-items:flex-start;">
+          <div style="background:var(--accent-blue-bg); color:var(--accent-blue); width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:800; flex-shrink:0;">2</div>
+          <div>
+            <div style="font-weight:700; font-size:0.95rem;">Как вводить данные</div>
+            <div style="font-size:0.85rem; color:var(--text-secondary); margin-top:2px;">
+              Выберите вашу нишу из 16 вариантов, введите доход или импортируйте выписку из банка. Все сохраняется автоматически на телефоне.
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex; gap:12px; align-items:flex-start;">
+          <div style="background:var(--accent-yellow-bg); color:var(--accent-yellow); width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:800; flex-shrink:0;">3</div>
+          <div>
+            <div style="font-weight:700; font-size:0.95rem;">Что вы получите</div>
+            <div style="font-size:0.85rem; color:var(--text-secondary); margin-top:2px;">
+              Пошаговый расчет, сценарии «Что если», счета, контент-планы и полный контроль над финансами бизнеса.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap:8px;">
+        <button class="btn btn-primary" id="btn-onboarding-try-example">Попробовать на примере (500 000 ₽)</button>
+        <button class="btn btn-secondary" id="btn-onboarding-start">Начать со своих данных</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- МОДАЛЬНОЕ ОКНО 2: СВОЯ НИША И НОРМЫ -->
+  <div class="modal-overlay" id="modal-custom-norms">
+    <div class="modal-sheet">
+      <div class="modal-header">
+        <h3 class="modal-title">Нормы для «Своей ниши»</h3>
+        <button class="close-btn" id="btn-close-custom-norms">&times;</button>
+      </div>
+      <p style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:14px;">
+        Задайте ориентировочные доли расходов от выручки (%):
+      </p>
+
+      <div class="form-group">
+        <label class="form-label" for="custom-salaries-norm">Норма зарплат (ФОТ), %</label>
+        <input type="number" id="custom-salaries-norm" class="form-input" placeholder="30" min="1" max="90">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="custom-rent-norm">Норма аренды, %</label>
+        <input type="number" id="custom-rent-norm" class="form-input" placeholder="10" min="1" max="90">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="custom-ads-norm">Норма рекламы, %</label>
+        <input type="number" id="custom-ads-norm" class="form-input" placeholder="10" min="1" max="90">
+      </div>
+
+      <div style="display:flex; gap:8px; margin-top:16px;">
+        <button class="btn btn-primary" id="btn-save-custom-norms" style="flex:1;">Сохранить нормы</button>
+        <button class="btn btn-secondary" id="btn-cancel-custom-norms">Отмена</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- МОДАЛЬНОЕ ОКНО 3: API КЛЮЧ GEMINI -->
+  <div class="modal-overlay" id="modal-apikey">
+    <div class="modal-sheet">
+      <div class="modal-header">
+        <h3 class="modal-title">API-ключ Google Gemini</h3>
+        <button class="close-btn" id="btn-close-apikey">&times;</button>
+      </div>
+
+      <p style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:12px;">
+        Для работы умного ИИ-советника и маркетинговых инструментов в облаке:
+      </p>
+
+      <div style="background:var(--bg-input); padding:12px; border-radius:12px; border:1px solid var(--border); font-size:0.82rem; line-height:1.5; margin-bottom:14px;">
+        <strong>Как получить бесплатный ключ за 1 минуту:</strong><br>
+        1. Перейдите на <a href="https://aistudio.google.com" target="_blank" rel="noopener" style="color:var(--accent-blue); text-decoration:underline;">aistudio.google.com</a><br>
+        2. Войдите в Google-аккаунт и нажмите <strong>«Get API key»</strong><br>
+        3. Создайте новый ключ и вставьте его в поле ниже.
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="input-gemini-key">Ваш ключ Gemini API</label>
+        <input type="password" id="input-gemini-key" class="form-input" placeholder="AIzaSy...">
+      </div>
+
+      <div style="display:flex; gap:8px; margin-top:12px;">
+        <button class="btn btn-primary" id="btn-save-apikey" style="flex:1;">Сохранить ключ</button>
+        <button class="btn btn-secondary" id="btn-remove-apikey">Удалить ключ</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- МОДАЛЬНОЕ ОКНО 4: ПОДТВЕРЖДЕНИЕ УДАЛЕНИЯ ЗАПИСИ ИЗ ИСТОРИИ -->
+  <div class="modal-overlay" id="modal-confirm-delete">
+    <div class="modal-sheet">
+      <div class="modal-header">
+        <h3 class="modal-title">Удалить запись?</h3>
+        <button class="close-btn" id="btn-close-delete">&times;</button>
+      </div>
+      <p id="delete-confirm-text" style="font-size:0.9rem; color:var(--text-secondary); margin-bottom:16px;">
+        Вы уверены, что хотите удалить эту запись из истории?
+      </p>
+      <div style="display:flex; gap:8px;">
+        <button class="btn btn-primary" id="btn-action-confirm-delete" style="background:var(--accent-red); border-color:var(--accent-red); flex:1;">
+          Удалить
+        </button>
+        <button class="btn btn-secondary" id="btn-cancel-delete" style="flex:1;">
+          Отмена
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- МОДАЛЬНОЕ ОКНО 5: ВВОД PIN-КОДА ДЛЯ ВЫХОДА ИЗ РЕЖИМА ПРОСМОТРА -->
+  <div class="modal-overlay" id="modal-enter-pin">
+    <div class="modal-sheet" style="text-align:center;">
+      <div class="modal-header">
+        <h3 class="modal-title">Выход из Режима просмотра</h3>
+        <button class="close-btn" id="btn-close-pin-modal">&times;</button>
+      </div>
+      <p style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:14px;">
+        Введите 4-значный PIN-код владельца:
+      </p>
+      <div class="form-group" style="display:flex; justify-content:center;">
+        <input type="password" id="input-unlock-pin" class="form-input" maxlength="4" placeholder="••••" inputmode="numeric" style="letter-spacing:8px; font-size:1.4rem; text-align:center; max-width:180px;">
+      </div>
+      <div style="display:flex; gap:8px; margin-top:12px;">
+        <button class="btn btn-primary" id="btn-submit-unlock-pin" style="flex:1;">Разблокировать</button>
+        <button class="btn btn-secondary" id="btn-cancel-unlock-pin">Отмена</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="./app.js"></script>
+  <script src="./app-tools.js"></script>
+</body>
+</html>

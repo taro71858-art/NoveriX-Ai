@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="appGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10b981" />
+      <stop offset="100%" stop-color="#2563eb" />
+    </linearGradient>
+    <linearGradient id="arrowGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="100%" stop-color="#e0f2fe" />
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000000" flood-opacity="0.3" />
+    </filter>
+  </defs>
+  <!-- Background squircle -->
+  <rect x="24" y="24" width="464" height="464" rx="112" fill="url(#appGrad)" />
+  <!-- Growth chart & Arrow -->
+  <g filter="url(#shadow)">
+    <!-- Chart bars -->
+    <rect x="110" y="320" width="46" height="80" rx="8" fill="#ffffff" fill-opacity="0.3" />
+    <rect x="180" y="260" width="46" height="140" rx="8" fill="#ffffff" fill-opacity="0.45" />
+    <rect x="250" y="200" width="46" height="200" rx="8" fill="#ffffff" fill-opacity="0.65" />
+    <rect x="320" y="140" width="46" height="260" rx="8" fill="#ffffff" fill-opacity="0.9" />
+    <!-- Dynamic growth arrow -->
+    <path d="M 120 330 Q 230 250 350 140" fill="none" stroke="#ffffff" stroke-width="26" stroke-linecap="round" />
+    <polygon points="340,110 395,130 375,185" fill="#ffffff" />
+  </g>
+</svg>
